@@ -1,7 +1,7 @@
 package com.movieweb.movieweb.config;
 
-import com.movieweb.movieweb.security.filters.JwtAuthenticationFilter;
-import lombok.RequiredArgsConstructor;
+import com.movieweb.movieweb.modules.auth.jwt.JwtAuthInterceptor;
+import com.movieweb.movieweb.modules.auth.jwt.JwtGuardFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -9,15 +9,24 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-@RequiredArgsConstructor
-public class SecurityConfig {
-    private final JwtAuthenticationFilter jwtAuthFilter;
+public class SecurityConfig implements WebMvcConfigurer {
+
+    private final JwtGuardFilter jwtGuardFilter;
+    private final JwtAuthInterceptor jwtAuthInterceptor;
+    public SecurityConfig(JwtGuardFilter jwtGuardFilter, JwtAuthInterceptor jwtAuthInterceptor) {
+        this.jwtGuardFilter = jwtGuardFilter;
+        this.jwtAuthInterceptor = jwtAuthInterceptor;
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -25,11 +34,21 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/auth/**").permitAll()
-                        .anyRequest().authenticated()
-                )
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                        .anyRequest().permitAll()
+                ).addFilterBefore(jwtGuardFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(jwtAuthInterceptor)
+                .addPathPatterns("/**"); // áp dụng cho tất cả endpoint
+    }
+
 }
