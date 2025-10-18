@@ -5,19 +5,16 @@ import com.movieweb.movieweb.common.dto.ResponseHelper;
 import com.movieweb.movieweb.modules.country.dto.CountryDto;
 import com.movieweb.movieweb.modules.country.entity.Country;
 import com.movieweb.movieweb.modules.country.service.CountryService;
-import com.movieweb.movieweb.security.annotations.PublicEndpoint;
-import com.movieweb.movieweb.security.annotations.RoleRequired;
+import com.movieweb.movieweb.modules.auth.annotations.PublicEndpoint;
+import com.movieweb.movieweb.modules.auth.annotations.RoleRequired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/quoc-gia")
 public class CountryController {
-
     private final CountryService service;
 
     public CountryController(CountryService service) {
