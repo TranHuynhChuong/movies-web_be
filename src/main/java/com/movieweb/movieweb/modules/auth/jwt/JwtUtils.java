@@ -1,4 +1,4 @@
-package com.movieweb.movieweb.security.jwt;
+package com.movieweb.movieweb.modules.auth.jwt;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.Map;
 
 @Service
-public class JwtService {
+public class JwtUtils {
 
     @Value("${jwt.secret}")
     private String secretKey;
@@ -28,7 +28,7 @@ public class JwtService {
                 .setSubject(id)
                 .addClaims(Map.of("role", role, "username", username))
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 86400000)) // 1 ngày
+                .setExpiration(new Date(System.currentTimeMillis() + jwtExpiration))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }

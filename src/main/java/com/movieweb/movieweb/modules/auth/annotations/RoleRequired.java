@@ -1,4 +1,4 @@
-package com.movieweb.movieweb.security.annotations;
+package com.movieweb.movieweb.modules.auth.annotations;
 
 import java.lang.annotation.*;
 
