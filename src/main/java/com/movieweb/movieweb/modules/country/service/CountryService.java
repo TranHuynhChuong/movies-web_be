@@ -12,29 +12,29 @@ import java.util.List;
 @Service
 public class CountryService {
 
-    private final CountryRepository repository;
+    private final CountryRepository countryRepository;
 
     public CountryService(CountryRepository repository) {
-        this.repository = repository;
+        this.countryRepository = repository;
     }
 
     public List<Country> getAll() {
-        return repository.findAll();
+        return countryRepository.findAll();
     }
 
     public Country getById(String id) {
-        return repository.findById(id).orElseThrow(NotFoundException::new);
+        return countryRepository.findById(id).orElseThrow(NotFoundException::new);
     }
 
 
     public long count() {
-        return repository.count();
+        return countryRepository.count();
     }
 
     public Country create(CountryDto dto) {
         String name = dto.getName();
 
-        if (repository.existsByName(name)) {
+        if (countryRepository.existsByName(name)) {
             throw new ConflictException();
         }
 
@@ -43,27 +43,27 @@ public class CountryService {
                 .name(dto.getName())
                 .build();
 
-        return repository.save(country);
+        return countryRepository.save(country);
     }
 
     public Country update(String id, CountryDto dto) {
-        Country existing = repository.findById(id)
+        Country existing = countryRepository.findById(id)
                 .orElseThrow(NotFoundException::new);
 
         String newName = dto.getName();
 
         if (!existing.getName().equalsIgnoreCase(newName) &&
-                repository.existsByName(newName)) {
+                countryRepository.existsByName(newName)) {
             throw new ConflictException();
         }
 
         existing.setName(dto.getName());
 
-        return repository.save(existing);
+        return countryRepository.save(existing);
     }
 
     public void delete(String id) {
-        repository.deleteById(id);
+        countryRepository.deleteById(id);
     }
 
     private String generateId(String name) {
