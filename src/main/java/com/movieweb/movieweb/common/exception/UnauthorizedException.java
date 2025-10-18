@@ -1,7 +1,7 @@
 package com.movieweb.movieweb.common.exception;
 
 public class UnauthorizedException extends HttpException {
-    private static final String DEFAULT_MESSAGE = "Chưa đăng nhập";
+    private static final String DEFAULT_MESSAGE = "Yêu cầu đăng nhập";
 
     public UnauthorizedException() {
         super(401, DEFAULT_MESSAGE);
