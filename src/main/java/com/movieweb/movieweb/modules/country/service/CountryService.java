@@ -27,6 +27,10 @@ public class CountryService {
     }
 
 
+    public long count() {
+        return repository.count();
+    }
+
     public Country create(CountryDto dto) {
         String name = dto.getName();
 
