@@ -15,42 +15,42 @@ import java.util.List;
 @RestController
 @RequestMapping("/quoc-gia")
 public class CountryController {
-    private final CountryService service;
+    private final CountryService countryService;
 
-    public CountryController(CountryService service) {
-        this.service = service;
+    public CountryController(CountryService CountryService) {
+        this.countryService = CountryService;
     }
     @PublicEndpoint()
     @GetMapping
     public ResponseEntity<ApiResponse<List<Country>>> getAll() {
-        List<Country> countries = service.getAll();
+        List<Country> countries = countryService.getAll();
         return ResponseEntity.ok(ResponseHelper.success(countries));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<Country>> getById(@PathVariable String id) {
-        Country country = service.getById(id);
+        Country country = countryService.getById(id);
         return ResponseEntity.ok(ResponseHelper.success(country));
     }
 
     @RoleRequired("ADMIN")
     @PostMapping
     public ResponseEntity<ApiResponse<Country>> create(@RequestBody CountryDto dto) {
-        Country created = service.create(dto);
+        Country created = countryService.create(dto);
         return ResponseEntity.ok(ResponseHelper.success(created));
     }
 
     @RoleRequired("ADMIN")
     @PatchMapping("/{id}")
     public ResponseEntity<ApiResponse<Country>> update(@PathVariable String id, @RequestBody CountryDto dto) {
-        Country updated = service.update(id, dto);
+        Country updated = countryService.update(id, dto);
         return ResponseEntity.ok(ResponseHelper.success(updated));
     }
 
     @RoleRequired("ADMIN")
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Country>> delete(@PathVariable String id) {
-        service.delete(id);
+        countryService.delete(id);
         return ResponseEntity.ok(ResponseHelper.success());
     }
 }
