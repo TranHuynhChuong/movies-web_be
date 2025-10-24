@@ -36,6 +36,8 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
             if (auth == null || auth.getAuthorities().stream().noneMatch(a -> a.getAuthority().equals("ROLE_" + requiredRole))) {
                 throw new ForbiddenException();
             }
+
+            return true;
         }
 
         if (method.isAnnotationPresent(PublicEndpoint.class)) {

@@ -1,0 +1,12 @@
+package com.movieweb.movieweb.modules.movie.repository;
+
+import com.movieweb.movieweb.modules.movie.entity.Episode;
+import com.movieweb.movieweb.modules.movie.entity.EpisodeId;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+
+@Repository
+public interface EpisodeRepository extends JpaRepository<Episode, EpisodeId> {
+
+}

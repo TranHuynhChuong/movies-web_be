@@ -1,7 +1,9 @@
 package com.movieweb.movieweb.modules.country.service;
 
+import com.movieweb.movieweb.common.exception.BadRequestException;
 import com.movieweb.movieweb.common.exception.ConflictException;
 import com.movieweb.movieweb.common.exception.NotFoundException;
+import com.movieweb.movieweb.common.utils.Generator;
 import com.movieweb.movieweb.modules.country.dto.CountryDto;
 import com.movieweb.movieweb.modules.country.entity.Country;
 import com.movieweb.movieweb.modules.country.repository.CountryRepository;
@@ -23,7 +25,7 @@ public class CountryService {
     }
 
     public Country getById(String id) {
-        return countryRepository.findById(id).orElseThrow(NotFoundException::new);
+        return countryRepository.findById(id).orElseThrow(() -> new NotFoundException("Không tim thấy quốc gia"));
     }
 
 
@@ -38,12 +40,17 @@ public class CountryService {
             throw new ConflictException();
         }
 
-        Country country = Country.builder()
-                .id(generateId(dto.getName()))
-                .name(dto.getName())
-                .build();
+        String id;
+        do {
+            id = Generator.generateId(5);
+        } while (countryRepository.existsById(id));
 
-        return countryRepository.save(country);
+            Country country = Country.builder()
+                    .id(id)
+                    .name(dto.getName())
+                    .build();
+
+            return countryRepository.save(country);
     }
 
     public Country update(String id, CountryDto dto) {
@@ -66,22 +73,5 @@ public class CountryService {
         countryRepository.deleteById(id);
     }
 
-    private String generateId(String name) {
-        if (name == null || name.isBlank()) {
-            throw new IllegalArgumentException("Name cannot be null or empty");
-        }
-
-        String normalized = java.text.Normalizer.normalize(name, java.text.Normalizer.Form.NFD)
-                .replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
-
-        String slug = normalized
-                .toLowerCase()
-                .replaceAll("[^a-z0-9\\s-]", "")
-                .replaceAll("\\s+", "-")
-                .replaceAll("-+", "-")
-                .replaceAll("^-|-$", "");
-
-        return slug;
-    }
 
 }

@@ -23,7 +23,8 @@ public class CountryInitRunner implements CommandLineRunner {
             "Hàn Quốc",
             "Pháp",
             "Anh",
-            "Trung Quốc"
+            "Trung Quốc",
+            "Thái Lan"
     );
 
     @Override

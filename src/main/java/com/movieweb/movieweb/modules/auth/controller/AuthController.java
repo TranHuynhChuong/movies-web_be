@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/xac-thuc")
+@RequestMapping("/auth")
 public class AuthController {
 
     private final AuthService authService;

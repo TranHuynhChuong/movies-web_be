@@ -1,4 +1,4 @@
-package com.movieweb.movieweb.modules.country.entity;
+package com.movieweb.movieweb.modules.version.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -6,18 +6,19 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
-@Table(name = "countries")
+@Table(name = "versions")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Country {
+public class Version {
 
     @Id
-    @Column( nullable = false, unique = true)
+    @Column(nullable = false, unique = true)
     private String id;
 
     @Column(nullable = false, unique = true)
