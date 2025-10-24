@@ -23,8 +23,14 @@ public class AuthService {
         this.jwtService = jwtService;
     }
 
-    public String login(String username, String password) {
-        Account account = accountRepository.findByUsername(username).orElseThrow(() -> new NotFoundException("Tài khoản không tồn tại"));
+    public String login(String username, String password, String role) {
+        Account account;
+        if (role.equals("ADMIN")){
+            account = accountRepository.findByUsernameAndRole(username, "ADMIN").orElseThrow(() -> new NotFoundException("Tài khoản không tồn tại"));
+        } else {
+            account = accountRepository.findByUsernameAndRole(username, "USER").orElseThrow(() -> new NotFoundException("Tài khoản không tồn tại"));
+        }
+
         if (!passwordEncoder.matches(password, account.getPassword())) {
             throw new BadRequestException("Mật khẩu không đúng");
         }

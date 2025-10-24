@@ -21,10 +21,16 @@ public class AuthController {
     }
 
     @PublicEndpoint()
+    @PostMapping("/login-admin")
+    public ResponseEntity<ApiResponse<String>> loginAdmin(@Valid @RequestBody LoginDto dto) {
+        String token = authService.login(dto.getUsername(), dto.getPassword(), "ADMIN");
+        return ResponseEntity.ok(ResponseHelper.success("Đăng nhập thành công", token));
+    }
+
+    @PublicEndpoint()
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<String>> login(@Valid @RequestBody LoginDto dto) {
-        String token = authService.login(dto.getUsername(), dto.getPassword());
-
+        String token = authService.login(dto.getUsername(), dto.getPassword(), "USER");
         return ResponseEntity.ok(ResponseHelper.success("Đăng nhập thành công", token));
     }
 }

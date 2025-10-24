@@ -15,4 +15,5 @@ public class LoginDto {
 
     @NotBlank(message = "Password không được để trống")
     private String password;
+
 }
