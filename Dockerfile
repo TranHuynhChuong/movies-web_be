@@ -1,5 +1,5 @@
 # ----------- Build stage -----------
-FROM maven:3.9.1-eclipse-temurin-21-jdk-alpine AS build
+FROM maven:3.9.1-jdk-21 AS build
 
 WORKDIR /app
 
