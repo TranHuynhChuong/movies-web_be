@@ -1,5 +1,5 @@
 # ----------- Build stage -----------
-FROM eclipse-temurin:21-jdk-alpine AS build
+FROM maven:3.9.1-eclipse-temurin-21 AS build
 
 WORKDIR /app
 
@@ -7,6 +7,9 @@ WORKDIR /app
 COPY pom.xml .
 COPY mvnw .
 COPY .mvn .mvn
+
+# Cho phép mvnw chạy trong Linux
+RUN chmod +x mvnw
 
 # Tải dependency trước để cache layer Docker
 RUN ./mvnw dependency:go-offline -B
