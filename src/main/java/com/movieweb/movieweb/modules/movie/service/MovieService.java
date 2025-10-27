@@ -398,24 +398,28 @@ public class MovieService {
         List<MovieCsvRecord> records = parseCsvFile(file, record -> {
             String title = record.get("title");
             String originalTitle = record.get("originalTitle");
+            String mediaType = record.get("mediaType");
+
             String posterPath = record.get("posterPath");
             String backdropPath = record.get("backdropPath");
-            String mediaType = record.get("mediaType");
+            String trailerPath = record.get("trailerPath");
+
             String status = record.get("status");
             String runtime = record.get("runtime");
             String numberOfEpisodes = record.get("numberOfEpisodes");
             String releaseYear = record.get("releaseYear");
-            String trailerPath = record.get("trailerPath");
-            String overview = record.get("overview");
+
             String actors = record.get("actors");
             String directors = record.get("directors");
             String countries = record.get("countries");
             String genres = record.get("genres");
 
+            String overview = record.get("overview");
+
             return new MovieCsvRecord(
-                    title, originalTitle, posterPath, backdropPath, mediaType, status,
-                    runtime, numberOfEpisodes, releaseYear, trailerPath, overview, actors, directors,
-                    countries, genres
+                    title, originalTitle, mediaType, posterPath, backdropPath, trailerPath, status,
+                    runtime, numberOfEpisodes, releaseYear, actors, directors,
+                    countries, genres,  overview
             );
         });
 
