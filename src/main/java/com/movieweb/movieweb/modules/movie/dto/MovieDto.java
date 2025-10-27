@@ -24,7 +24,6 @@ public class MovieDto {
     @NotBlank(message = "Đường dẫn poster là bắt buộc")
     private String posterPath;
 
-    @NotBlank(message = "Đường dẫn backdrop là bắt buộc")
     private String backdropPath;
 
     @NotBlank(message = "Loại phim (movie hoặc series) là bắt buộc")
@@ -42,7 +41,6 @@ public class MovieDto {
     @NotNull(message = "Năm phát hành là bắt buộc")
     private Integer releaseYear;
 
-    @NotBlank(message = "Đường dẫn trailer là bắt buộc")
     private String trailerPath;
 
     @NotEmpty(message = "Phim phải có ít nhất một thể loại")
