@@ -58,7 +58,7 @@ public class MovieController {
             @RequestParam(required = false) Integer releaseYear,
             @RequestParam(required = false) String sortBy,
             @RequestParam(required = false) String sortOrder,
-            @RequestParam(defaultValue = "show") String status,
+            @RequestParam(required = false) String status,
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "32") int limit
     ) {
