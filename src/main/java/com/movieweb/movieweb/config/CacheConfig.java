@@ -16,8 +16,8 @@ public class CacheConfig {
     @Bean
     public Caffeine<Object, Object> caffeineConfig() {
         return Caffeine.newBuilder()
-                .expireAfterWrite(Duration.ofMinutes(10))  // TTL 10 phút
-                .maximumSize(1000);                        // Giới hạn 1000 entries
+                .expireAfterWrite(Duration.ofHours(24))  // TTL 1 ngày
+                .maximumSize(1000);                      // Giới hạn 1000 entries
     }
 
     @Bean
