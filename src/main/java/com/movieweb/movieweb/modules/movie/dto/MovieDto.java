@@ -55,8 +55,9 @@ public class MovieDto {
     @NotBlank(message = "Đạo diễn là bắt buộc")
     private String directors;
 
-    @NotBlank(message = "Quốc gia sản xuất là bắt buộc")
-    private Country country;
+    @NotEmpty(message = "Phim phải thuộc ít nhất một quốc gia")
+    private List<Country> countries;
+
     private List<VersionDto> versions; // Danh sách phiên bản (thuyết minh, vietsub, v.v.)
 
     // ------------------- INNER CLASSES -------------------

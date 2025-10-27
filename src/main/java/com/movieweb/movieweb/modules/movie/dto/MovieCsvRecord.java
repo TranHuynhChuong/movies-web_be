@@ -14,6 +14,6 @@ public record MovieCsvRecord(
         String overview,
         String actors,
         String directors,
-        String country,
+        String countries,
         String genres
 ) {}

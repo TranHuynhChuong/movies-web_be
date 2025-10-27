@@ -6,6 +6,7 @@ import com.movieweb.movieweb.common.utils.Generator;
 import com.movieweb.movieweb.modules.country.dto.CountryDto;
 import com.movieweb.movieweb.modules.country.entity.Country;
 import com.movieweb.movieweb.modules.country.repository.CountryRepository;
+import com.movieweb.movieweb.modules.genre.entity.Genre;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -105,4 +106,21 @@ public class CountryService {
         return countryRepository.saveAll(countriesToSave);
     }
 
+
+    public List<Country> getAllByIds(List<String> countriesIds) {
+        List<Country> countries = countryRepository.findAllById(countriesIds);
+
+        if (countries.size() != countriesIds.size()) {
+            // Tìm các id không tồn tại
+            List<String> foundIds = countries.stream()
+                    .map(Country::getId)
+                    .toList();
+            List<String> notFoundIds = countriesIds.stream()
+                    .filter(id -> !foundIds.contains(id))
+                    .toList();
+            throw new RuntimeException("Country not found for IDs: " + notFoundIds);
+        }
+
+        return countries;
+    }
 }

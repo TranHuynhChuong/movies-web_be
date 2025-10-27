@@ -63,9 +63,13 @@ public class Movie {
     private String actors;
     private String directors;
 
-    @ManyToOne
-    @JoinColumn(name = "country_id")
-    private Country country;
+    @ManyToMany
+    @JoinTable(
+            name = "movie_countries",
+            joinColumns = @JoinColumn(name = "movie_id"),
+            inverseJoinColumns = @JoinColumn(name = "country_id")
+    )
+    private List<Country> countries;
 
 
     @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = true)

@@ -39,9 +39,6 @@ import static com.movieweb.movieweb.common.utils.CsvFileParser.parseCsvFile;
 public class MovieService {
 
     private final MovieRepository movieRepository;
-    private final VersionRepository versionRepository;
-    private final EpisodeRepository episodeRepository;
-    private final StreamingSourceRepository streamingSourceRepository;
 
     private final CountryService countryService;
     private final GenreService genreService;
@@ -50,13 +47,20 @@ public class MovieService {
     @Transactional
     @CacheEvict(value = {"moviesSearch"}, allEntries = true)
     public Movie createMovie(MovieDto dto) {
-        Country country = countryService.getById(dto.getCountry().getId());
+
+        List<Country> countries = countryService.getAllByIds(dto.getCountries().stream()
+                .map(Country::getId)
+                .toList());
+
         List<Genre> genres = genreService.getAllByIds(dto.getGenres().stream()
                 .map(Genre::getId)
                 .toList());
 
         if (genres.size() != dto.getGenres().size()) {
             throw new BadRequestException("Một số thể loại không tồn tại");
+        }
+        if (countries.size() != dto.getCountries().size()) {
+            throw new BadRequestException("Một số quốc gia không tồn tại");
         }
 
         String id;
@@ -79,7 +83,7 @@ public class MovieService {
                 .overview(dto.getOverview())
                 .actors(dto.getActors())
                 .directors(dto.getDirectors())
-                .country(country)
+                .countries(countries)
                 .genres(genres)
                 .episodes(new ArrayList<>())
                 .build();
@@ -127,13 +131,19 @@ public class MovieService {
         Movie movie = movieRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Movie không tồn tại"));
 
-        Country country = countryService.getById(dto.getCountry().getId());
+        List<Country> countries = countryService.getAllByIds(dto.getCountries().stream()
+                .map(Country::getId)
+                .toList());
+
         List<Genre> genres = genreService.getAllByIds(dto.getGenres().stream()
                 .map(Genre::getId)
                 .toList());
 
         if (genres.size() != dto.getGenres().size()) {
             throw new BadRequestException("Một số thể loại không tồn tại");
+        }
+        if (countries.size() != dto.getCountries().size()) {
+            throw new BadRequestException("Một số quốc gia không tồn tại");
         }
 
 
@@ -150,7 +160,7 @@ public class MovieService {
         movie.setOverview(dto.getOverview());
         movie.setActors(dto.getActors());
         movie.setDirectors(dto.getDirectors());
-        movie.setCountry(country);
+        movie.setCountries(countries);
         movie.setGenres(genres);
 
         movie.getEpisodes().clear();
@@ -239,7 +249,8 @@ public class MovieService {
             }
 
             if (countryId != null && !countryId.equals("all")) {
-                predicates.add(cb.equal(root.get("country").get("id"), countryId));
+                Join<Movie, Country> countryJoin = root.join("countries", JoinType.INNER);
+                predicates.add(cb.equal(countryJoin.get("id"), countryId));
             }
 
             if (mediaType != null && !mediaType.equals("all")) {
@@ -308,11 +319,14 @@ public class MovieService {
         }
 
         // Gọn country
-        if (movie.getCountry() != null) {
-            movieMap.put("country", Map.of(
-                    "id", movie.getCountry().getId(),
-                    "name", movie.getCountry().getName()
-            ));
+        if (movie.getCountries() != null) {
+            List<Map<String, String>> countryList = movie.getCountries().stream()
+                    .map(c -> Map.of(
+                            "id", c.getId(),
+                            "name", c.getName()
+                    ))
+                    .toList();
+            movieMap.put("countries", countryList);
         }
 
         if (movie.getEpisodes() != null && !movie.getEpisodes().isEmpty()) {
@@ -395,13 +409,13 @@ public class MovieService {
             String overview = record.get("overview");
             String actors = record.get("actors");
             String directors = record.get("directors");
-            String country = record.get("country");
+            String countries = record.get("countries");
             String genres = record.get("genres");
 
             return new MovieCsvRecord(
                     title, originalTitle, posterPath, backdropPath, mediaType, status,
                     runtime, numberOfEpisodes, releaseYear, trailerPath, overview, actors, directors,
-                    country, genres
+                    countries, genres
             );
         });
 
@@ -409,10 +423,14 @@ public class MovieService {
         List<Genre> genresList = genreService.getAll();
 
         List<Movie> moviesToSave = records.stream().map(r -> {
-            Country country = countriesList.stream()
-                    .filter(c -> Generator.generateSlug(c.getName()).equals(Generator.generateSlug(r.country())))
-                    .findFirst()
-                    .orElse(null);
+            List<Country> countries = Arrays.stream(r.countries().split(","))
+                    .map(String::trim)
+                    .map(name -> countriesList.stream()
+                            .filter(c -> Generator.generateSlug(c.getName()).equals(Generator.generateSlug(name)))
+                            .findFirst()
+                            .orElse(null))
+                    .filter(Objects::nonNull)
+                    .toList();
             List<Genre> genres = Arrays.stream(r.genres().split(","))
                     .map(String::trim)
                     .map(name -> genresList.stream()
@@ -437,7 +455,7 @@ public class MovieService {
                     .overview(r.overview())
                     .actors(r.actors())
                     .directors(r.directors())
-                    .country(country)
+                    .countries(countries)
                     .genres(genres)
                     .episodes(new ArrayList<>())
                     .build();
