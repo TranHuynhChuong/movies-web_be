@@ -25,16 +25,16 @@ public class VersionInitRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        if (versionService.count() == 0) {
-            List<VersionDto> dtos = versions.stream()
-                    .map(name -> {
-                        VersionDto dto = new VersionDto();
-                        dto.setName(name);
-                        return dto;
-                    })
-                    .toList();
-
-            versionService.createAll(dtos);
-        }
+//        if (versionService.count() == 0) {
+//            List<VersionDto> dtos = versions.stream()
+//                    .map(name -> {
+//                        VersionDto dto = new VersionDto();
+//                        dto.setName(name);
+//                        return dto;
+//                    })
+//                    .toList();
+//
+//            versionService.createAll(dtos);
+//        }
     }
 }

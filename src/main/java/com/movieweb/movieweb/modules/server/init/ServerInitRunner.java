@@ -27,16 +27,16 @@ public class ServerInitRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        if (serverService.count() == 0) {
-            List<ServerDto> dtos = servers.stream()
-                    .map(name -> {
-                        ServerDto dto = new ServerDto();
-                        dto.setName(name);
-                        return dto;
-                    })
-                    .toList();
-
-            serverService.createAll(dtos);
-        }
+//        if (serverService.count() == 0) {
+//            List<ServerDto> dtos = servers.stream()
+//                    .map(name -> {
+//                        ServerDto dto = new ServerDto();
+//                        dto.setName(name);
+//                        return dto;
+//                    })
+//                    .toList();
+//
+//            serverService.createAll(dtos);
+//        }
     }
 }

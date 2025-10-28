@@ -64,17 +64,17 @@ public class CountryInitRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        if (countryService.count() == 0) {
-            List<CountryDto> dtos = countries.stream()
-                    .map(name -> {
-                        CountryDto dto = new CountryDto();
-                        dto.setName(name);
-                        return dto;
-                    })
-                    .toList();
-
-            countryService.createAll(dtos);
-        }
+//        if (countryService.count() == 0) {
+//            List<CountryDto> dtos = countries.stream()
+//                    .map(name -> {
+//                        CountryDto dto = new CountryDto();
+//                        dto.setName(name);
+//                        return dto;
+//                    })
+//                    .toList();
+//
+//            countryService.createAll(dtos);
+//        }
     }
 
 }

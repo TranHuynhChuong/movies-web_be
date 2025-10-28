@@ -33,7 +33,7 @@ public class GenreInitRunner implements CommandLineRunner {
             "Cổ Điển",
             "DC",
             "Disney",
-            "Gay Cấn",
+            "Gây Cấn",
             "Gia Đình",
             "Giáng Sinh",
             "Giả Tưởng",
@@ -79,16 +79,16 @@ public class GenreInitRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        if (genreService.count() == 0) {
-            List<GenreDto> dtos = genres.stream()
-                    .map(name -> {
-                        GenreDto dto = new GenreDto();
-                        dto.setName(name);
-                        return dto;
-                    })
-                    .toList();
-
-            genreService.createAll(dtos);
-        }
+//        if (genreService.count() == 0) {
+//            List<GenreDto> dtos = genres.stream()
+//                    .map(name -> {
+//                        GenreDto dto = new GenreDto();
+//                        dto.setName(name);
+//                        return dto;
+//                    })
+//                    .toList();
+//
+//            genreService.createAll(dtos);
+//        }
     }
 }
