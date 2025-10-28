@@ -43,13 +43,16 @@ public class Movie {
     @Column(name = "number_of_episodes")
     private Integer numberOfEpisodes;
 
+    @Column(name = "current_episode")
+    private Integer currentEpisode;
+
     @Column(name = "release_year")
     private Integer releaseYear;
 
     @Column(name = "trailer_path")
     private String trailerPath;
 
-    @ManyToMany
+    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(
             name = "movie_genres",
             joinColumns = @JoinColumn(name = "movie_id"),
@@ -63,7 +66,7 @@ public class Movie {
     private String actors;
     private String directors;
 
-    @ManyToMany
+    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(
             name = "movie_countries",
             joinColumns = @JoinColumn(name = "movie_id"),
@@ -82,4 +85,11 @@ public class Movie {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+
+    public void removeAllRelations() {
+        if (genres != null) genres.clear();
+        if (countries != null) countries.clear();
+        if (episodes != null) episodes.clear();
+    }
 }

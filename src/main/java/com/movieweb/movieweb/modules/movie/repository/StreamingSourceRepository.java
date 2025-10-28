@@ -9,5 +9,5 @@ import java.util.Optional;
 @Repository
 public interface StreamingSourceRepository extends JpaRepository<StreamingSource, Long> {
 
-    Optional<StreamingSource> findByMovieIdAndVersionIdAndEpisodeNumberAndServerId(String movieId, String versionId, Integer episodeNumber, String serverId);
+    Optional<StreamingSource> findByMovieIdAndVersionIdAndEpisodeNameAndServerId(String movieId, String versionId, String episodeName, String serverId);
 }

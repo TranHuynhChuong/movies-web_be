@@ -19,6 +19,6 @@ public class EpisodeId implements Serializable {
     @Column(name = "version_id")
     private String versionId;
 
-    @Column(name = "episode_number")
-    private Integer episodeNumber;
+    @Column(name = "episode_name")
+    private String episodeName;
 }

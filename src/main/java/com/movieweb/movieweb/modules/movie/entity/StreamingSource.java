@@ -28,8 +28,8 @@ public class StreamingSource {
     private String versionId;
 
     @Id
-    @Column(name = "episode_number")
-    private Integer episodeNumber;
+    @Column(name = "episode_name")
+    private String episodeName;
 
     @Id
     @Column(name = "server_id")
@@ -42,7 +42,7 @@ public class StreamingSource {
     @JoinColumns({
             @JoinColumn(name = "movie_id", referencedColumnName = "movie_id", insertable = false, updatable = false),
             @JoinColumn(name = "version_id", referencedColumnName = "version_id", insertable = false, updatable = false),
-            @JoinColumn(name = "episode_number", referencedColumnName = "episode_number", insertable = false, updatable = false)
+            @JoinColumn(name = "episode_name", referencedColumnName = "episode_name", insertable = false, updatable = false)
     })
     @JsonIgnore
     private Episode episode;

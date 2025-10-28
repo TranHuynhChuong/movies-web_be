@@ -26,8 +26,8 @@ public class Episode {
     private String versionId;
 
     @Id
-    @Column(name = "episode_number")
-    private Integer episodeNumber;
+    @Column(name = "episode_name")
+    private String episodeName;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore

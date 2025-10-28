@@ -19,8 +19,8 @@ public class StreamingSourceId implements Serializable {
     @Column(name = "version_id")
     private String versionId;
 
-    @Column(name = "episode_number")
-    private Integer episodeNumber;
+    @Column(name = "episode_name")
+    private String episodeName;
 
     @Column(name = "server_id")
     private String serverId;

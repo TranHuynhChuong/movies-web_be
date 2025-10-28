@@ -79,7 +79,7 @@ public class MovieDto {
     @Builder
     public static class EpisodeDto {
         @NotNull(message = "Số tập không được để trống")
-        private Integer episodeNumber;
+        private String episodeName;
         private List<StreamingSourceDto> streamingSources;
     }
 
