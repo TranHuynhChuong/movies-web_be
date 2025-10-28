@@ -48,6 +48,13 @@ public class MovieController {
         return ResponseEntity.ok(ResponseHelper.success(movie));
     }
 
+    @RoleRequired("ADMIN")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ApiResponse<Map<String, Object>>> deleteById(@PathVariable String id) {
+        movieService.deleteMovie(id);
+        return ResponseEntity.ok(ResponseHelper.success());
+    }
+
     @PublicEndpoint
     @GetMapping("/search")
     public ResponseEntity<ApiResponse<Map<String, Object>>> searchMovies(
@@ -56,14 +63,26 @@ public class MovieController {
             @RequestParam(required = false) String mediaType,
             @RequestParam(required = false) String title,
             @RequestParam(required = false) Integer releaseYear,
-            @RequestParam(required = false) String sortBy,
-            @RequestParam(required = false) String sortOrder,
             @RequestParam(required = false) String status,
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "32") int limit
     ) {
-        Map<String, Object> movieList = movieService.searchMovies(genreId, countryId, mediaType, title, releaseYear, sortBy, sortOrder,status, page, limit);
+
+        Map<String, Object> movieList = movieService.searchMovies(genreId, countryId, mediaType, title, releaseYear, status, page, limit);
         return ResponseEntity.ok(ResponseHelper.success(movieList));
     }
+
+    @PublicEndpoint
+    @GetMapping("/list")
+    public ResponseEntity<ApiResponse<Map<String, Object>>> getMovieList(
+            @RequestParam(required = false) String type,
+            @RequestParam(required = false) String value,
+            @RequestParam(required = false) Integer limit
+    ) {
+
+        Map<String, Object> movieList = movieService.getMovieList(type,value, limit);
+        return ResponseEntity.ok(ResponseHelper.success(movieList));
+    }
+
 
 }
